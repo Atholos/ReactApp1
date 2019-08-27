@@ -2,16 +2,32 @@
 /* eslint-disable keyword-spacing */
 /* eslint-disable linebreak-style */
 /* eslint-disable indent */
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {FlatList} from 'react-native';
 import PropTypes from 'prop-types';
 import ListItem from './ListItem';
+import {MediaContext} from '../contexts/MediaContext';
 
 const List = (props) => {
+  const [media, setMedia] = useContext(MediaContext);
+
+  const getMedia = () => {
+    fetch('https://raw.githubusercontent.com/mattpe/wbma/master/docs/assets/test.json')
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      console.log(result),
+      setMedia(result);
+    });
+  };
+
+  useEffect(() => getMedia(), []);
+
   return(
     <FlatList
-    data={props.mediaArray}
-    renderItem={({item}) => <ListItem singleMedia={item} />}
+      data={media}
+      renderItem={({item}) => <ListItem singleMedia={item} />}
       />
   );
 };

@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 /* eslint-disable keyword-spacing */
 /* eslint-disable linebreak-style */
@@ -8,18 +10,32 @@ import PropTypes from 'prop-types';
 import ListItem from './ListItem';
 import {MediaContext} from '../contexts/MediaContext';
 
-const List = (props) => {
+const List = () => {
   const [media, setMedia] = useContext(MediaContext);
 
   const getMedia = () => {
-    fetch('https://raw.githubusercontent.com/mattpe/wbma/master/docs/assets/test.json')
-    .then((response) => {
-      return response.json();
-    })
-    .then((result) => {
-      console.log(result),
-      setMedia(result);
-    });
+    mediaUrl = 'http://media.mw.metropolia.fi/wbma/media';
+    idUrl = 'http://media.mw.metropolia.fi/wbma/media/';
+    mediaArray = [];
+    fetch(mediaUrl)
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        result.forEach((n) => {
+            console.log(n);
+            const id = n.file_id;
+            fetch(idUrl + id)
+            .then((response) => {
+              return response.json();
+            })
+            .then((result) => {
+              mediaArray.push(result);
+              console.log(mediaArray);
+              setMedia(mediaArray);
+            });
+        });
+      });
   };
 
   useEffect(() => getMedia(), []);
@@ -28,6 +44,7 @@ const List = (props) => {
     <FlatList
       data={media}
       renderItem={({item}) => <ListItem singleMedia={item} />}
+     // keyExtractor={(item, index) => index.toString}
       />
   );
 };

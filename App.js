@@ -3,8 +3,7 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable indent */
 import React from 'react';
-import {StyleSheet,
-   Text, View, Image, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import List from './components/List';
 
 const mediaArray = [
@@ -41,7 +40,7 @@ const mediaArray = [
 const App = () => {
  return (
    <View style={styles.container}>
-     <List></List>
+     <List mediaArray={mediaArray}></List>
    </View>
  );
 };
@@ -50,19 +49,7 @@ const styles = StyleSheet.create({
  container: {
    backgroundColor: '#fff',
  },
- row: {
-   flex: 2,
-  flexDirection: 'row',
-  padding: 15,
-  backgroundColor: '#ccc',
-  marginBottom: 5,
- },
- header: {
-    fontWeight: 'bold',
-    flex: 1,
-    paddingTop: 5,
-    fontSize: 35,
- },
+
 });
 
 export default App;

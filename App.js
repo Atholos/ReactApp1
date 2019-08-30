@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable indent */

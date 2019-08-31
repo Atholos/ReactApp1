@@ -8,9 +8,11 @@ import PropTypes from 'prop-types';
 
 const ListItem = (props) => {
   return (
+
+    <View>
     <TouchableOpacity style={styles.row}>
       <Image
-        style={{flex: 1}}
+        style={styles.image}
         source={{uri: props.singleMedia.thumbnails.w160}}
       />
       <View style={{flex: 1}}>
@@ -18,6 +20,7 @@ const ListItem = (props) => {
         <Text>{props.singleMedia.description}</Text>
       </View>
     </TouchableOpacity>
+    </View>
   );
 };
 
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
   row: {
     flex: 2,
    flexDirection: 'row',
-   padding: 15,
+   padding: 5,
    backgroundColor: '#ccc',
    marginBottom: 5,
   },
@@ -38,6 +41,15 @@ const styles = StyleSheet.create({
      flex: 1,
      paddingTop: 5,
      fontSize: 35,
+     color: 'orange',
+  },
+  image: {
+    flex: 1,
+    height: 150,
+    alignSelf: 'center',
+    resizeMode: 'contain',
+    width: 150,
+    borderRadius: 150/2,
   },
 });
 

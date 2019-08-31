@@ -1,16 +1,19 @@
+/* eslint-disable no-invalid-this */
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable indent */
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ToolbarAndroid, StatusBar} from 'react-native';
 import List from './components/List';
+import Constants from 'expo-constants';
 
 const mediaArray = [
   {
     'key': '0',
     'title': 'Title 1',
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate. Sed lacinia consectetur fermentum. Vestibulum lobortis purus id nisi mattis posuere. Praesent sagittis justo quis nibh ullamcorper, eget elementum lorem consectetur. Pellentesque eu consequat justo, eu sodales eros.',
+    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate. Sed lacinia consectetur fermentum. Vestibulum lobortis purus id nisi mattis posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'thumbnails': {
       w160: 'http://placekitten.com/160/161',
     },
@@ -19,7 +22,7 @@ const mediaArray = [
   {
     'key': '1',
     'title': 'Title 2',
-    'description': 'Donec dignissim tincidunt nisl, non scelerisque massa pharetra ut. Sed vel velit ante. Aenean quis viverra magna. Praesent eget cursus urna. Ut rhoncus interdum dolor non tincidunt. Sed vehicula consequat facilisis. Pellentesque pulvinar sem nisl, ac vestibulum erat rhoncus id. Vestibulum tincidunt sapien eu ipsum tincidunt pulvinar. ',
+    'description': 'Donec dignissim tincidunt nisl, non scelerisque massa pharetra ut. Sed vel velit ante. Aenean quis viverra magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate. Sed lacinia consectetur fermentum. ',
     'thumbnails': {
       w160: 'http://placekitten.com/160/162',
     },
@@ -28,7 +31,7 @@ const mediaArray = [
   {
     'key': '2',
     'title': 'Title 3',
-    'description': 'Phasellus imperdiet nunc tincidunt molestie vestibulum. Donec dictum suscipit nibh. Sed vel velit ante. Aenean quis viverra magna. Praesent eget cursus urna. Ut rhoncus interdum dolor non tincidunt. Sed vehicula consequat facilisis. Pellentesque pulvinar sem nisl, ac vestibulum erat rhoncus id. ',
+    'description': 'Phasellus imperdiet nunc tincidunt molestie vestibulum. Donec dictum suscipit nibh. Sed vel velit ante. Aenean quis viverra magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'thumbnails': {
       w160: 'http://placekitten.com/160/163',
     },
@@ -39,17 +42,65 @@ const mediaArray = [
 
 const App = () => {
  return (
-   <View style={styles.container}>
-     <List mediaArray={mediaArray}></List>
+   <View>
+     <View style={styles.emptyBar}/>
+      <View style={styles.statusBar}>
+     <StatusBar
+        barStyle = "dark-content"
+        backgroundColor = "#00BCD4"
+        // translucent = {false}
+        // networkActivityIndicatorVisible = {true}
+        />
+     </View>
+     <View>
+     <ToolbarAndroid
+      logo={require('./paw.jpg')}
+      title="Cats"
+      style={styles.toolbar}
+      actions={[{title: 'Settings', icon: require('./icon_settings.png'), show: 'always'}]}
+      onActionSelected={this.onActionSelected}
+      />
+     </View>
+
+        <View style={styles.container}>
+           <List mediaArray={mediaArray}></List>
+        </View>
    </View>
  );
 };
 
+const onActionSelected = (position) => {
+  if (position === 0) { // index of 'Settings'
+    showSettings();
+  }
+};
+
+
 const styles = StyleSheet.create({
  container: {
    backgroundColor: '#fff',
+   justifyContent: 'flex-start',
+   shadowOffset: {width: 10, height: 10},
+   shadowColor: 'red',
+   shadowOpacity: 1.0,
+   shadowRadius: 2,
+   margin: 20,
  },
-
+ statusBar: {
+  justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+},
+toolbar: {
+  backgroundColor: 'white',
+  height: 100,
+  justifyContent: 'space-between',
+  padding: 15,
+},
+emptyBar: {
+  backgroundColor: 'gray',
+  height: Constants.statusBarHeight,
+},
 });
 
 export default App;

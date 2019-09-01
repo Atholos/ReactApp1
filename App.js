@@ -5,7 +5,7 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable indent */
 import React from 'react';
-import {StyleSheet, View, ToolbarAndroid, StatusBar} from 'react-native';
+import {StyleSheet, View, ToolbarAndroid, StatusBar, Image, flexDirection} from 'react-native';
 import List from './components/List';
 import Constants from 'expo-constants';
 
@@ -13,7 +13,7 @@ const mediaArray = [
   {
     'key': '0',
     'title': 'Title 1',
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate. Sed lacinia consectetur fermentum. Vestibulum lobortis purus id nisi mattis posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate. Sed lacinia consectetur fermentum. Vestibulum lobortis purus id nisi mattis posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate.',
     'thumbnails': {
       w160: 'http://placekitten.com/160/161',
     },
@@ -31,7 +31,7 @@ const mediaArray = [
   {
     'key': '2',
     'title': 'Title 3',
-    'description': 'Phasellus imperdiet nunc tincidunt molestie vestibulum. Donec dictum suscipit nibh. Sed vel velit ante. Aenean quis viverra magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    'description': 'Phasellus imperdiet nunc tincidunt molestie vestibulum. Donec dictum suscipit nibh. Sed vel velit ante. Aenean quis viverra magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sodales enim eget leo condimentum vulputate. Sed lacinia consectetur fermentum.',
     'thumbnails': {
       w160: 'http://placekitten.com/160/163',
     },
@@ -42,8 +42,8 @@ const mediaArray = [
 
 const App = () => {
  return (
-   <View>
-     <View style={styles.emptyBar}/>
+   <View style={styles.parentView}>
+      <View style={styles.emptyBar}/>
       <View style={styles.statusBar}>
      <StatusBar
         barStyle = "dark-content"
@@ -52,16 +52,21 @@ const App = () => {
         // networkActivityIndicatorVisible = {true}
         />
      </View>
-     <View>
+       <View>
      <ToolbarAndroid
-      logo={require('./paw.jpg')}
+       logo={require('./paw.jpg')}
       title="Cats"
       style={styles.toolbar}
-      actions={[{title: 'Settings', icon: require('./icon_settings.png'), show: 'always'}]}
+       actions={[{title: 'Settings', icon: require('./icon_settings.png'), show: 'always'}]}
       onActionSelected={this.onActionSelected}
       />
      </View>
-
+      <View>
+       <Image
+        source={require('./cats.jpg')}
+        style={styles.img}
+        />
+     </View>
         <View style={styles.container}>
            <List mediaArray={mediaArray}></List>
         </View>
@@ -79,27 +84,30 @@ const onActionSelected = (position) => {
 const styles = StyleSheet.create({
  container: {
    backgroundColor: '#fff',
-   justifyContent: 'flex-start',
-   shadowOffset: {width: 10, height: 10},
+   /* shadowOffset: {width: 10, height: 10},
    shadowColor: 'red',
    shadowOpacity: 1.0,
-   shadowRadius: 2,
+   shadowRadius: 2, */
    margin: 20,
+   flex: 1,
  },
  statusBar: {
   justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
 },
 toolbar: {
-  backgroundColor: 'white',
-  height: 100,
-  justifyContent: 'space-between',
-  padding: 15,
+  height: 50,
 },
 emptyBar: {
   backgroundColor: 'gray',
   height: Constants.statusBarHeight,
+},
+img: {
+  // flex: 1,
+  width: null,
+  height: 200,
+},
+parentView: {
+  flex: 1,
 },
 });
 

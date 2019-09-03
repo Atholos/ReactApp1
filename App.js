@@ -1,27 +1,15 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable indent */
 import React from 'react';
-import {StyleSheet,
-    View} from 'react-native';
-import List from './components/List';
+import {StyleSheet, View} from 'react-native';
 import {MediaProvider} from './contexts/MediaContext';
+import Navigator from './Navigators/Navigator';
 
 
 const App = () => {
- return (
-   <MediaProvider>
-      <View style={styles.container}>
-        <List />
-      </View>
-   </MediaProvider>
- );
+  return (
+    <MediaProvider>
+      <Navigator/>
+    </MediaProvider>
+  );
 };
-
-const styles = StyleSheet.create({
- container: {
-   backgroundColor: '#fff',
- },
-});
 
 export default App;

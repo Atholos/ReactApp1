@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable indent */
 /* eslint-disable linebreak-style */
@@ -11,10 +12,12 @@ const ListItem = (props) => {
   return (
       <View style={styles.main}>
           <TouchableOpacity style={styles.rowitems}
-          onPress={
-            () => {
-              props.navigation.push('Single', {file: singleMedia});
-  }}>
+              onPress={
+                () => {
+                  console.log(singleMedia, navigation);
+                  navigation.push('Single', {file: singleMedia});
+                }
+              }>
               <View style={styles.imagebox}>
                   <Image
                       style={styles.image}

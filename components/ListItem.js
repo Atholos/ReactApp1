@@ -1,15 +1,20 @@
+/* eslint-disable max-len */
 /* eslint-disable indent */
 /* eslint-disable linebreak-style */
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 
-
 const ListItem = (props) => {
   const URL = 'http://media.mw.metropolia.fi/wbma/uploads/';
+  const {navigation, singleMedia} = props;
   return (
       <View style={styles.main}>
-          <TouchableOpacity style={styles.rowitems}>
+          <TouchableOpacity style={styles.rowitems}
+          onPress={
+            () => {
+              props.navigation.push('Single', {file: singleMedia});
+  }}>
               <View style={styles.imagebox}>
                   <Image
                       style={styles.image}
@@ -17,8 +22,8 @@ const ListItem = (props) => {
                   />
               </View>
               <View style={styles.textbox}>
-                  <Text style={styles.title}>{props.singleMedia.title}</Text>
-                  <Text>{props.singleMedia.description}</Text>
+                  <Text style={styles.title} numberOfLines={1}>{props.singleMedia.title}</Text>
+                  <Text numberOfLines={5}> {props.singleMedia.description}</Text>
               </View>
           </TouchableOpacity>
       </View>

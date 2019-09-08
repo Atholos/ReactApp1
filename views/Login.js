@@ -11,8 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import FormTextInput from '../components/FormTextInput';
 import useSignUpForm from '../hooks/LoginHooks';
-import useRegisterForm from '../hooks/RegisterHook';
-import console = require('console');
 
 const Login = (props) => { // props is needed for navigation
   const mediaUrl = 'http://media.mw.metropolia.fi/wbma/login';
@@ -24,9 +22,13 @@ const Login = (props) => { // props is needed for navigation
   }; */
 
   const signInAsync = async (url, data) => {
+    const user = {
+        username: data.username,
+        password: data.password,
+    };
     const response = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(user),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -39,41 +41,30 @@ const Login = (props) => { // props is needed for navigation
     props.navigation.navigate('App');
   };
 
-  const register = async (url, data1) => {
-    console.log(data1);
+  const register = async (url, data) => {
+    console.log(data);
+    console.log(url);
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data1),
+      body: JSON.stringify(data),
     });
     const json = await response.json();
-    await AsyncStorage.setItem('username', json.user.username);
-    await AsyncStorage.setItem('fullname', json.user.full_name);
-    await AsyncStorage.setItem('email', json.user.email);
+    console.log('register ', json);
   };
-
- /*  useEffect(() => {
-    signInAsync();
-  }, []);
-
-  useEffect(() => {
-    register();
-  }, []); */
 
   const {
     inputs,
     handleUsernameChange,
     handlePasswordChange,
-  } = useSignUpForm();
-
-  const {
     handleUsernameChangeRegister,
     handlePasswordChangeRegister,
     handleFullnameChangeRegister,
     handleEmailChangeRegister,
-  } = useRegisterForm();
+  } = useSignUpForm();
+
 
   return (
     <View style={styles.container}>
@@ -100,28 +91,28 @@ const Login = (props) => { // props is needed for navigation
      <View style={styles.container}>
      <Text>Register</Text>
      <View style={styles.form}>
-       <FormTextInput
+     <FormTextInput
          autoCapitalize='none'
          value={inputs.username}
-         placeholder='username'
+         placeholder='Username'
          onChangeText={handleUsernameChangeRegister}
        />
-       <FormTextInput
+     <FormTextInput
          autoCapitalize='none'
          value={inputs.password}
-         placeholder='password'
+         placeholder='Password'
          onChangeText={handlePasswordChangeRegister}
          secureTextEntry={true}
        />
-       <FormTextInput
+     <FormTextInput
          autoCapitalize='none'
          value={inputs.fullname}
-         placeholder='Your name'
+         placeholder='Fullname'
          onChangeText={handleFullnameChangeRegister}
        />
-       <FormTextInput
+     <FormTextInput
          autoCapitalize='none'
-         placeholder='email'
+         placeholder='Email'
          onChangeText={handleEmailChangeRegister}
          value={inputs.email}
        />

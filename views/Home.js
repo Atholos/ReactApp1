@@ -1,22 +1,28 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import List from '../components/List';
+import {Container, Header} from 'native-base';
+import PropTypes from 'prop-types';
+import mediaAPI from '../hooks/ApiHooks';
 
 const Home = (props) => {
   const {navigation} = props;
+  const {getUserFromToken} = mediaAPI();
+  getUserFromToken();
+  const {userToContext} = mediaAPI();
+  userToContext().then((user) => {
+    console.log('usercontext', user);
+  });
+
   return (
-    <View style={styles.container}>
+    <Container>
+      <Header />
       <List navigation={navigation}></List>
-    </View>
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-
-});
+Home.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Home;

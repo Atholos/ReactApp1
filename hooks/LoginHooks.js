@@ -16,41 +16,28 @@ const useSignUpForm = () => {
         password: text,
       }));
   };
-  const handleUsernameChangeRegister = (text) => {
+  const handleEmailChange = (text) => {
     setInputs((inputs) =>
       ({
         ...inputs,
-        username: text,
+        email: text,
       }));
   };
-  const handlePasswordChangeRegister = (text) => {
+  const handleFullnameChange = (text) => {
     setInputs((inputs) =>
       ({
         ...inputs,
-        password: text,
+        full_name: text,
       }));
-  };
-  const handleEmailChangeRegister = (text) => {
-    setInputs((inputs) => ({
-      ...inputs,
-      email: text,
-    }));
-  };
-  const handleFullnameChangeRegister = (text) => {
-    setInputs((inputs) => ({
-      ...inputs,
-      fullname: text,
-    }));
   };
   return {
     handleUsernameChange,
     handlePasswordChange,
+    handleEmailChange,
+    handleFullnameChange,
     inputs,
-    handleUsernameChangeRegister,
-    handlePasswordChangeRegister,
-    handleEmailChangeRegister,
-    handleFullnameChangeRegister,
   };
 };
+
 
 export default useSignUpForm;

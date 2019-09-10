@@ -1,71 +1,68 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable max-len */
-/* eslint-disable indent */
-/* eslint-disable linebreak-style */
-import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import PropTypes from 'prop-types';
+import React,{useState,useEffect} from "react";
+import PropTypes from "prop-types";
+import { StyleSheet, Text, View, Image, TouchableOpacity, } from "react-native";
+import {
+  ListItem as BaseListItem,
+  Left,
+  Body,
+  Right,
+  Thumbnail,
+  Content,
+  Button,
+  List
+} from "native-base";
 
-const ListItem = (props) => {
-  const URL = 'http://media.mw.metropolia.fi/wbma/uploads/';
+const getThumbnail = (url) => {
+  console.log('urli', url);
+  const [thumbnails, setThumbnails] = useState({});
+  async function fetchUrl() {
+    console.log('fetsurl');
+    const response = await fetch('http://media.mw.metropolia.fi/wbma/media/' + url);
+    const json = await response.json();
+    console.log('json', json);
+    setThumbnails(json.thumbnails);
+  }
+  useEffect(() => {
+    fetchUrl();
+  }, []);
+  return thumbnails;
+};
+
+const ListItem = props => {
   const {navigation, singleMedia} = props;
+  const tn = getThumbnail(singleMedia.file_id);
+  console.log('tn' + tn);
+
   return (
-      <View style={styles.main}>
-          <TouchableOpacity style={styles.rowitems}
-              onPress={
-                () => {
-                  console.log(singleMedia, navigation);
-                  navigation.push('Single', {file: singleMedia});
-                }
-              }>
-              <View style={styles.imagebox}>
-                  <Image
-                      style={styles.image}
-                      source={{uri: URL+props.singleMedia.thumbnails.w160}}
-                  />
-              </View>
-              <View style={styles.textbox}>
-                  <Text style={styles.title} numberOfLines={1}>{props.singleMedia.title}</Text>
-                  <Text numberOfLines={5}> {props.singleMedia.description}</Text>
-              </View>
-          </TouchableOpacity>
-      </View>
+    <BaseListItem thumbnail>
+      <Left>
+        <Thumbnail
+          circle
+          large
+          source={{ uri:'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160 }}
+        />
+      </Left>
+      <Body>
+        <Text>{singleMedia.title}</Text>
+        <Text note numberOfLines={1}>
+          {singleMedia.description}
+        </Text>
+      </Body>
+      <Right>
+        <Button
+          onPress={() => {
+            navigation.push("Single", { file: singleMedia });
+          }}
+        >
+          <Text>View</Text>
+        </Button>
+      </Right>
+    </BaseListItem>
   );
 };
 
 ListItem.propTypes = {
-  singleMedia: PropTypes.object,
+  singleMedia: PropTypes.object
 };
-
-const styles = StyleSheet.create({
-
-  main: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-  },
-  textbox: {
-      flex: 1,
-      padding: 10,
-      justifyContent: 'center',
-  },
-  imagebox: {
-      flex: 1,
-  },
-  image: {
-      flex: 1,
-  },
-  rowitems: {
-      backgroundColor: 'lightgrey',
-      flex: 2,
-      flexDirection: 'row',
-      borderRadius: 5,
-      borderColor: 'white',
-      margin: 10,
-  },
-  title: {
-      fontSize: 35,
-  },
-});
 
 export default ListItem;

@@ -5,13 +5,13 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable indent */
 import React, {useContext, useEffect} from 'react';
-import {FlatList} from 'react-native';
 import PropTypes from 'prop-types';
 import ListItem from './ListItem';
 import {MediaContext} from '../contexts/MediaContext';
+import {List as BaseList} from 'native-base';
 
 const List = (props) => {
-  const [media, setMedia] = useContext(MediaContext);
+  const {media, setMedia} = useContext(MediaContext);
 
   const getMedia = () => {
     mediaUrl = 'http://media.mw.metropolia.fi/wbma/media';
@@ -31,7 +31,7 @@ const List = (props) => {
             })
             .then((result) => {
               mediaArray.push(result);
-              console.log(mediaArray);
+              console.log('mediaArray: '+mediaArray);
               setMedia(mediaArray);
             });
         });
@@ -41,9 +41,9 @@ const List = (props) => {
   useEffect(() => getMedia(), []);
 
   return (
-    <FlatList
-      data={media}
-      renderItem={({item}) =>
+    <BaseList
+      dataArray={media}
+      renderRow={(item) =>
         <ListItem
           singleMedia={item}
           navigation={props.navigation}>

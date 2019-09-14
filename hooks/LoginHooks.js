@@ -16,6 +16,12 @@ const useSignUpForm = () => {
         password: text,
       }));
   };
+  const handlePasswordConfirmChange = (text) => {
+    setInputs((inputs) => ({
+      ...inputs,
+      passwordConfirm: text,
+    }));
+  };
   const handleEmailChange = (text) => {
     setInputs((inputs) =>
       ({
@@ -30,12 +36,21 @@ const useSignUpForm = () => {
         full_name: text,
       }));
   };
+
+  const handleFormChange = (form) =>{
+    setInputs((inputs) => ({
+      ...inputs,
+      form: form,
+    }));
+  };
   return {
     handleUsernameChange,
     handlePasswordChange,
     handleEmailChange,
     handleFullnameChange,
     inputs,
+    handleFormChange,
+    handlePasswordConfirmChange,
   };
 };
 

@@ -5,7 +5,7 @@ import {
   Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {CardItem, Card, Text, Button, Left, Body, Container, Header, Content, Right, Thumbnail} from 'native-base';
+import {CardItem, Card, Text, Button, Body, Container, Header, Content, Right} from 'native-base';
 import mediaAPI from '../hooks/ApiHooks';
 
 const Profile = (props) => {
@@ -41,7 +41,9 @@ const Profile = (props) => {
           <CardItem>
             <Right>
               <CardItem >
+                {avatar &&
                 <Image source={{uri: avatar}} style ={{width: 100, height: 100}}/>
+                }
               </CardItem>
             </Right>
             <Body>
@@ -68,16 +70,6 @@ const Profile = (props) => {
     </Container>
   );
 };
-
-/* const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-}); */
 
 Profile.propTypes = {
   navigation: PropTypes.object,

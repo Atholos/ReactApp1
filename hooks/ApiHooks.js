@@ -3,6 +3,7 @@ import {AsyncStorage} from 'react-native';
 import {MediaContext} from '../contexts/MediaContext';
 
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
+
 const userToContext = async () => { // Call this when app starts (= Home.js)
   const {user, setUser} = useContext(MediaContext);
   const getFromStorage = async () => {
@@ -108,17 +109,27 @@ const mediaAPI = () => {
     );
   };
 
-
-  /*   const getAvatar = (user) => {
-    const [avatar, setAvatar] = useState({});
-    console.log('avatar', apiUrl + 'tags/avatar_' + user.user_id);
-    fetchGetUrl(apiUrl + 'tags/avatar_' + user.user_id).then((json) => {
-      console.log('avatarjson', json[0].filename);
-      setAvatar(apiUrl + 'uploads/' + json[0].filename);
+  const userCheck = async (username) => {
+    const response = await fetch(apiUrl + '/username' + username, {
+      method: 'Get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).catch( (error) => {
+      console.error(error);
     });
-    return avatar;
-  }; */
-
+    const result = await response.json();
+    const usernameStatus = result.available;
+    console.log('Username result: ', result);
+    if (!usernameStatus) {
+      alert.alert(
+          'Error',
+          'Username already exists',
+          [{text: 'OK', onPress: () => console.log('OK pressed')}],
+          {cancelable: false}
+      );
+    }
+  };
 
   return {
     getAllMedia,
@@ -128,6 +139,7 @@ const mediaAPI = () => {
     getUserFromToken,
     getAvatar,
     userToContext,
+    userCheck,
   };
 };
 

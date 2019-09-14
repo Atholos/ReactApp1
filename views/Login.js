@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 import React, {useEffect} from 'react';
 import {Text, Button} from 'react-native';
 import FormTextInput from '../components/FormTextInput';
 import useSignUpForm from '../hooks/LoginHooks';
 import mediaAPI from '../hooks/ApiHooks';
-
-const validate = require('validate.js');
+import validate from 'validate.js';
+import validation from '../validation/validation';
 
 import {
   Container,
@@ -20,72 +21,6 @@ const Login = (props) => {
     inputs,
     handleFormChange,
   } = useSignUpForm();
-
-  const regValidation = (inputs, props) => {
-    const constraints = {
-      email: {
-        presence: {
-          message: '^Please enter an Email address',
-        },
-        email: {
-          message: '^Please enter a valid email address',
-        },
-      },
-      password: {
-        presence: {
-          message: '^You must enter a password!',
-        },
-        length: {
-          minimum: 5,
-          message: '^Password must be atleast 5 characters',
-        },
-
-      },
-      confirmPassword: {
-        presence: {
-          message: '^You must confirm your password',
-        },
-        equality: 'password',
-        message: '^Passwords do not match',
-      },
-      username: {
-        presence: {
-          message: '^You must enter an username',
-        },
-        length: {
-          minimum: 3,
-          maximum: 20,
-          message: '^Please enter a valid username',
-        },
-      },
-    };
-
-    const emailError = validate({email: inputs.email}, constraints);
-    const passwordError = validate({password: inputs.password}, constraints);
-    const confirmPasswordError = validate(
-        {password: inputs.password, confirmPassword: inputs.confirmPassword},
-        constraints
-    );
-    const usernameError = validate(
-        {usernameError: inputs.username},
-        constraints
-    );
-
-    const errorArray = [
-      emailError,
-      passwordError,
-      confirmPasswordError,
-      usernameError,
-    ];
-    console.log(errorArray);
-    if (errorArray.length === 0) {
-      registerAsync(inputs, props);
-    } else {
-      errorArray.forEach((item) => {
-        console.log(item);
-      });
-    }
-  };
 
   const LoginForm = () => {
     const {
@@ -104,8 +39,7 @@ const Login = (props) => {
               autoCapitalize="none"
               placeholder="username"
               onChangeText={handleUsernameChange}
-              value={inputs.username}
-              required
+              value={inputs.username} required
             />
           </Item>
           <Item>
@@ -114,8 +48,7 @@ const Login = (props) => {
               placeholder="password"
               secureTextEntry={true}
               onChangeText={handlePasswordChange}
-              value={inputs.password}
-              required
+              value={inputs.password} required
             />
           </Item>
           <Button
@@ -151,16 +84,14 @@ const Login = (props) => {
           </Body>
           <Item>
             <FormTextInput
-              autoCapitalize="none"
-              placeholder="username"
+              autoCapitalize='none'
+              placeholder='username'
               onChangeText={handleUsernameChange}
-              value={inputs.username}
-              required
               onEndEditing={(evt) => {
                 const uname = evt.nativeEvent.text;
-                console.log('Uname in input', uname);
                 userCheck(uname);
               }}
+              value= {inputs.username} required
             />
           </Item>
           <Item>
@@ -220,6 +151,60 @@ const Login = (props) => {
         </Form>
       </Content>
     );
+  };
+
+  const regValidation = (inputs, props) => {
+    const constraints = {
+      email: {
+        presence: {
+          message: '^Please enter an email address',
+        },
+        email: {
+          message: '^Please enter a valid email address',
+        },
+      },
+      password: {
+        presence: {
+          message: '^Please enter a password',
+        },
+        length: {
+          minimum: 5,
+          message: '^Your password must be at least 5 characters',
+        },
+      },
+      username: {
+        presence: {
+          message: '^Please enter an username',
+        },
+        length: {
+          minimum: 3,
+          message: '^Username must be at least 3 characters',
+        },
+      },
+      confirmPassword: {
+        equality: 'password',
+      },
+    };
+
+    const emailError = validate({email: inputs.email}, constraints);
+    const passwordError = validate({password: inputs.password}, constraints);
+    const passconfError = validate(
+        {password: inputs.password, confirmPassword: inputs.confirmPassword},
+        constraints
+    );
+    const usernameError = validate({username: inputs.username}, constraints);
+    console.log(emailError.email, passwordError.password, usernameError.username, passconfError.confirmPassword);
+    if (!emailError.email && !passwordError.password && !usernameError.username && !passconfError.confirmPassword) {
+      registerAsync(inputs, props);
+      console.log('KAIKKI OIKEIN = REKISTERÖI');
+    } else {
+      const errorArr = [emailError.email, passwordError.password, usernameError.username, passconfError.confirmPassword];
+      for (let i=0; i< errorArr.length; i++) {
+        if (errorArr[i]) {
+          alert(errorArr[i]);
+        }
+      }
+    }
   };
 
   useEffect(() => {

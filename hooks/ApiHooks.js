@@ -110,7 +110,7 @@ const mediaAPI = () => {
   };
 
   const userCheck = async (username) => {
-    const response = await fetch(apiUrl + '/username' + username, {
+    const response = await fetch(apiUrl + 'users/username' + username, {
       method: 'Get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

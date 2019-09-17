@@ -47,15 +47,21 @@ const Profile = (props) => {
               </CardItem>
             </Right>
             <Body>
+              {user &&
               <Text>
            Hello {user.username}
               </Text>
+              }
+              {user &&
               <Text>
         Fullname: {user.full_name}
               </Text>
+              }
+              {user &&
               <Text>
         Email: {user.email}
               </Text>
+              }
             </Body>
           </CardItem>
           <CardItem>

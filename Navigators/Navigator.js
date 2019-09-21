@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '../node_modules/react-navigation-tabs';
 import {createStackNavigator} from '../node_modules/react-navigation-stack';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
+import Upload from '../views/Upload';
 import Single from '../views/Single';
 import AuthLoadingScreen from '../views/Authloading';
 import Login from '../views/Login';
@@ -16,6 +17,7 @@ const TabNavigator = createBottomTabNavigator(
     {
       Home,
       Profile,
+      Upload,
     },
     {
       defaultNavigationOptions: ({navigation}) => ({
@@ -26,6 +28,8 @@ const TabNavigator = createBottomTabNavigator(
             iconName = 'home';
           } else if (routeName === 'Profile') {
             iconName = 'person';
+          } else if (routeName === 'Upload') {
+            iconName = 'md-cloud-upload';
           }
 
           // You can return any component that you like here!

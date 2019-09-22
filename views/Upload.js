@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Image} from 'react-native';
 import {Form, Button, Text, Content, Header} from 'native-base';
 import FormTextInput from '../components/FormTextInput';
@@ -7,14 +7,21 @@ import useUploadForm from '../hooks/UploadHooks';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import mediaAPI from '../hooks/ApiHooks';
+import {MediaContext} from '../contexts/MediaContext';
+import validate from 'validate.js';
+import { setDetectionImagesAsync } from 'expo/build/AR';
 
 const Upload = (props) => {
   const [file, setFile] = useState(null);
+  const {getAllMedia} = mediaAPI();
+  const {media, setMedia} = useContext(MediaContext);
   const {
     inputs,
     handleTitleChange,
     handleDescriptionChange,
     handleUpload,
+    clearForm,
   } = useUploadForm();
 
   const getPermissionAsync = async () => {
@@ -44,6 +51,51 @@ const Upload = (props) => {
     getPermissionAsync();
   }, []);
 
+  const validateInputs = (inputs, props) => {
+    const constraints = {
+      title: {
+        presence: {
+          message: '^You must enter a title!',
+        },
+        length: {
+          minimum: 5,
+          message: '^title must be atleast 5 characters',
+        },
+      },
+      description: {
+        presence: {
+          message: '^You must give a description of your image!',
+        },
+        length: {
+          minimum: 10,
+          message: '^Description must be atleast 10 characters',
+        },
+      },
+    };
+    const titleError = validate({title: inputs.title}, constraints);
+    const descError = validate(
+        {description: inputs.description},
+        constraints
+    );
+    if (!titleError.title && !descError.description) {
+      handleUpload(file);
+      setMedia({});
+      setMedia();
+
+      props.navigation.navigate('Home');
+      console.log('Upload Done!');
+    } else {
+      const errorArray = [titleError.title, descError.description];
+
+      for (let i = 0; i < errorArray.length; i++) {
+        if (errorArray[i]) {
+          console.log('alert:', errorArray[i][0]);
+          alert(errorArray[i][0]);
+        }
+      }
+    }
+  };
+
   return (
     <Content>
       <Header />
@@ -55,11 +107,13 @@ const Upload = (props) => {
           value={inputs.title}
           placeholder='title'
           onChangeText={handleTitleChange}
+          required
         />
         <FormTextInput
           value={inputs.description}
           placeholder='description'
           onChangeText={handleDescriptionChange}
+          required
         />
         <Button block
           onPress={pickImage}
@@ -69,13 +123,16 @@ const Upload = (props) => {
 
         <Button block
           onPress={() => {
-            handleUpload(file);
+            validateInputs(inputs, props);
           }}
         >
           <Text>Upload file</Text>
         </Button>
 
-        <Button block>
+        <Button block
+          onPress={()=>{
+            clearForm();
+          }}>
           <Text>Reset</Text>
         </Button>
       </Form>

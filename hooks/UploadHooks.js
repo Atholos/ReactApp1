@@ -19,8 +19,12 @@ const useUploadForm = () => {
     }));
   };
 
-  const handleUpload = (file) => {
-    const fd = new FormData();
+  const clearForm = () => {
+    setInputs('');
+    console.log('Form Cleared!');
+  };
+
+  const handleUpload = async (file) => {
     const filename = file.uri.split('/').pop();
 
     // Infer the type of the image
@@ -32,12 +36,13 @@ const useUploadForm = () => {
       type = match ? `video/${match[1]}` : `video`;
     }
 
-    // Upload the image using the fetch and FormData APIs
+    // Upload the image using the Sfetch and FormData APIs
+    const formData = new FormData();
     // Assume "photo" is the name of the form field the server expects
-    fd.append('file', {uri: file.uri, name: filename, type});
-    fd.append('title', inputs.title);
-    fd.append('description', inputs.description);
-    console.log(uploadFile(fd));
+    formData.append('file', {uri: file.uri, name: filename, type});
+    formData.append('title', inputs.title);
+    formData.append('description', inputs.description);
+    console.log(uploadFile(formData));
   };
 
   return {
@@ -45,6 +50,7 @@ const useUploadForm = () => {
     handleDescriptionChange,
     handleUpload,
     inputs,
+    clearForm,
   };
 };
 

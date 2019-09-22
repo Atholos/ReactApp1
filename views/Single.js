@@ -28,8 +28,6 @@ const Single = (props) => {
           </Text>
         </Body>
       </CardItem>
-
-
     </Card>
   );
 };

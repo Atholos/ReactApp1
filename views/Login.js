@@ -196,7 +196,7 @@ const Login = (props) => {
     console.log(emailError.email, passwordError.password, usernameError.username, passconfError.confirmPassword);
     if (!emailError.email && !passwordError.password && !usernameError.username && !passconfError.confirmPassword) {
       registerAsync(inputs, props);
-      console.log('KAIKKI OIKEIN = REKISTERÖI');
+      console.log('Registration ok!');
     } else {
       const errorArr = [emailError.email, passwordError.password, usernameError.username, passconfError.confirmPassword];
       for (let i=0; i< errorArr.length; i++) {

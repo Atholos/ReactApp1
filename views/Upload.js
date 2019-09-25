@@ -10,11 +10,10 @@ import * as Permissions from 'expo-permissions';
 import mediaAPI from '../hooks/ApiHooks';
 import {MediaContext} from '../contexts/MediaContext';
 import validate from 'validate.js';
-import { setDetectionImagesAsync } from 'expo/build/AR';
 
 const Upload = (props) => {
   const [file, setFile] = useState(null);
-  const {getAllMedia} = mediaAPI();
+  const {reloadAllMedia} = mediaAPI();
   const {media, setMedia} = useContext(MediaContext);
   const {
     inputs,
@@ -23,6 +22,15 @@ const Upload = (props) => {
     handleUpload,
     clearForm,
   } = useUploadForm();
+
+  const canSubmit = () => {
+    if (inputs.description && inputs.title && file!==null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const isEnabled = canSubmit();
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -79,11 +87,16 @@ const Upload = (props) => {
     );
     if (!titleError.title && !descError.description) {
       handleUpload(file);
-      setMedia({});
-      setMedia();
+      clearForm();
+      setFile();
+      setMedia([]);
 
-      props.navigation.navigate('Home');
-      console.log('Upload Done!');
+      setTimeout(() =>{
+        reloadAllMedia(setMedia);
+        props.navigation.navigate('Home');
+      }, 2000);
+
+      console.log('Upload Complete!');
     } else {
       const errorArray = [titleError.title, descError.description];
 
@@ -121,7 +134,8 @@ const Upload = (props) => {
           <Text>Choose file</Text>
         </Button>
 
-        <Button block
+        <Button
+          disabled = {!isEnabled}
           onPress={() => {
             validateInputs(inputs, props);
           }}
@@ -130,8 +144,9 @@ const Upload = (props) => {
         </Button>
 
         <Button block
-          onPress={()=>{
+          onPress={() => {
             clearForm();
+            setFile();
           }}>
           <Text>Reset</Text>
         </Button>

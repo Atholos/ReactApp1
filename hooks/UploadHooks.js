@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import mediaAPI from './ApiHooks';
 
-const {uploadFile} = mediaAPI();
 
 const useUploadForm = () => {
   const [inputs, setInputs] = useState({});
@@ -26,12 +25,16 @@ const useUploadForm = () => {
 
   const handleUpload = async (file) => {
     const filename = file.uri.split('/').pop();
+    const {uploadFile, getAllMedia} = mediaAPI();
 
     // Infer the type of the image
     const match = /\.(\w+)$/.exec(filename);
     let type = '';
     if (file.type === 'image') {
       type = match ? `image/${match[1]}` : `image`;
+      if (type === 'image/jpg') {
+        type = 'image/jpeg';
+      }
     } else {
       type = match ? `video/${match[1]}` : `video`;
     }
@@ -42,7 +45,19 @@ const useUploadForm = () => {
     formData.append('file', {uri: file.uri, name: filename, type});
     formData.append('title', inputs.title);
     formData.append('description', inputs.description);
-    console.log(uploadFile(formData));
+    console.log('Upload file: ', uploadFile(formData));
+
+/*     uploadFile(formData).then((response) =>{
+      console.log('upload response: ', response);
+
+      setMedia([]);
+      setTimeout(() => {
+        getAllMedia(setMedia);
+        navigator.navigator('home');
+      }, 2000).catch((err) => {
+        console.log(err);
+      });
+    }); */
   };
 
   return {

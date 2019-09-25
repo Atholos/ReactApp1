@@ -45,6 +45,11 @@ const fetchPostUrl = async (url, data) => {
 };
 
 const mediaAPI = () => {
+  const reloadAllMedia = (setMedia) => {
+    fetchGetUrl(apiUrl + 'media').then((json) => {
+      setMedia(json);
+    });
+  };
   const getAllMedia = () => {
     const [media, setMedia] = useContext(MediaContext);
     const [loading, setLoading] = useState(true);
@@ -165,6 +170,7 @@ const mediaAPI = () => {
     userToContext,
     userCheck,
     uploadFile,
+    reloadAllMedia,
   };
 };
 

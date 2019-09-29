@@ -1,35 +1,63 @@
-/* eslint-disable max-len */
 import React from 'react';
-import {Image} from 'react-native';
-import {CardItem, Thumbnail, Left, Body, Card, Text} from 'native-base';
+import PropTypes from 'prop-types';
+import AImage from '../components/AsyncImage';
+import {Container, Content, Text, Card, CardItem, H2, Body} from 'native-base';
+import mediaAPI from '../hooks/ApiHooks';
+import {Video} from 'expo-av';
 
 const Single = (props) => {
-  const URL = 'http://media.mw.metropolia.fi/wbma/uploads/';
   const {navigation} = props;
-  const file = navigation.getParam('file', 'Tuut');
-  /* console.log(file.title); */
+  console.log('Singel navi', navigation.state);
+  const file = navigation.state.params.file;
+  const {getUserInfo} = mediaAPI();
   return (
-    <Card>
-      <CardItem>
-        <Left>
-          <Thumbnail source={{uri: URL+file.thumbnails.w160}}/>
-          <Body>
-            <Text>
-              {file.title}
-            </Text>
-          </Body>
-        </Left>
-      </CardItem>
-      <CardItem>
-        <Body>
-          <Image source={{uri: URL+file.thumbnails.w160}} style={{height: 200, width: 350}}/>
-          <Text>
-            {file.description}
-          </Text>
-        </Body>
-      </CardItem>
-    </Card>
+    <Container>
+      <Content>
+        <Card>
+          <CardItem>
+            <Body>
+              <H2>{file.title}</H2>
+              <Text note>by: {getUserInfo(file.user_id).username}</Text>
+            </Body>
+          </CardItem>
+          <CardItem>
+            <Body>
+              {file.media_type === 'image' &&
+              <AImage
+                source={{uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + file.filename}}
+                style={{
+                  borderRadius: 50,
+                  width: '100%',
+                  height: 500,
+                }}
+                spinnerColor='#b3e5fc'
+              />
+              }
+              {file.media_type === 'video' &&
+              <Video source={{uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + file.filename}}
+                style={{
+                  width: '100%',
+                  height: 500,
+                }}
+                useNativeControls={true}
+              />
+              }
+            </Body>
+          </CardItem>
+          <CardItem>
+            <Text>{file.description}</Text>
+          </CardItem>
+        </Card>
+      </Content>
+    </Container>
   );
 };
 
+
+Single.propTypes = {
+  navigation: PropTypes.object,
+  file: PropTypes.object,
+};
+
 export default Single;
+

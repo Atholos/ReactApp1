@@ -5,7 +5,7 @@ import {
   Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {CardItem, Card, Text, Button, Body, Container, Header, Content, Right} from 'native-base';
+import {CardItem, Card, Text, Button, Body, Container, Header, Content, Right, Left} from 'native-base';
 import mediaAPI from '../hooks/ApiHooks';
 
 const Profile = (props) => {
@@ -28,6 +28,9 @@ const Profile = (props) => {
   const signOutAsync = async () => {
     await AsyncStorage.clear();
     props.navigation.navigate('Auth');
+  };
+  const navigationMyFiles = () => {
+    props.navigation.navigate('MyFiles');
   };
 
   return (
@@ -66,10 +69,15 @@ const Profile = (props) => {
           </CardItem>
           <CardItem>
             <Right>
-              <Button title="Logout!" onPress={signOutAsync}>
+              <Button onPress={signOutAsync}>
                 <Text>Logout</Text>
               </Button>
             </Right>
+            <Left>
+              <Button onPress={navigationMyFiles}>
+                <Text>My Uploads</Text>
+              </Button>
+            </Left>
           </CardItem>
         </Card>
       </Content>

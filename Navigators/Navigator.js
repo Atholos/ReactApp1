@@ -8,6 +8,7 @@ import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Upload from '../views/Upload';
 import Single from '../views/Single';
+import MyFiles from '../views/MyFiles';
 import AuthLoadingScreen from '../views/Authloading';
 import Login from '../views/Login';
 import {Icon} from 'native-base';
@@ -56,6 +57,9 @@ const StackNavigator = createStackNavigator(
       },
       Logout: {
         screen: Login,
+      },
+      MyFiles: {
+        screen: MyFiles,
       },
     },
 );
